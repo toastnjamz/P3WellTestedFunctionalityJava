@@ -51,7 +51,7 @@ public class ProductService {
 
     public void deleteProduct(Long productId){
         // TODO what happens if a product has been added to a cart and has been later removed from the inventory ?
-        // delete the product form the cart by using the specific method
+        // delete the product from the cart by using the specific method
         // => the choice is up to the student
         productRepository.deleteById(productId);
     }
@@ -65,7 +65,8 @@ public class ProductService {
                 product.setQuantity(product.getQuantity() - cartLine.getQuantity());
                 if (product.getQuantity()<1){
                     productRepository.delete(product);
-                }else {
+                }
+                else {
                     productRepository.save(product);
                 }
             }

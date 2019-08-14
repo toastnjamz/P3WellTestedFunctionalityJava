@@ -6,8 +6,8 @@ public class ProductModel {
     private String name;            // Required
     private String description;
     private String details;
-    private String  quantity;       // Required, Integer, Greater than zero
-    private String  price;          // Required, Numeric, Greater than zero
+    private String quantity;       // Required, Integer, Greater than zero
+    private String price;          // Required, Numeric, Greater than zero
 
     public Long getId() {
         return id;
@@ -54,6 +54,7 @@ public class ProductModel {
     }
 
     public void setPrice(String price) {
+    	// TODO add validation to setter methods for form validation
         this.price = price;
     }
 }
