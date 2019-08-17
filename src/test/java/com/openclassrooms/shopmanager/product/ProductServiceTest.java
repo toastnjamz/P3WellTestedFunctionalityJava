@@ -42,9 +42,9 @@ public class ProductServiceTest {
         product2.setId(2L);
         product2.setName("First product");
 
-        // act
         when(productRepository.findAll()).thenReturn(Arrays.asList(product1, product2));
 
+        // act
         List<Product> products = productService.getAllProducts();
 
         // assert
@@ -64,9 +64,9 @@ public class ProductServiceTest {
         product2.setId(2L);
         product2.setName("First product");
 
-        // act
         when(productRepository.findAllByOrderByIdDesc()).thenReturn(Arrays.asList(product1, product2));
 
+        // act
         List<Product> products = productService.getAllAdminProducts();
 
         // assert
@@ -76,15 +76,15 @@ public class ProductServiceTest {
     }
     
     @Test
-    public void getByProductId_product_returnsProductById() {
+    public void getByProductId_singleProduct_returnsProductById() {
     	// arrange
     	Product product = new Product();
     	product.setId(1L);
         product.setName("Test Product");
     	
-    	// act
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
         
+        // act
         Product foundProduct = productService.getByProductId(product.getId());
     	
     	// assert
@@ -93,7 +93,34 @@ public class ProductServiceTest {
     }
     
     @Test
-    public void createProduct_stateUnderTest_savesNewProduct() {
+    public void createProduct_addingOneNewProduct_savesNewProductToDb() {
+    	//TODO
+    	
+    	// arrange
+    	ProductModel productModel = new ProductModel();
+    	productModel.setId(1L);
+    	productModel.setName("Test Product");
+    	productModel.setQuantity("2");
+    	productModel.setPrice("10.0");
+    	
+    	Product product = new Product();
+    	product.setId(productModel.getId());
+    	product.setName(productModel.getName());
+    	product.setQuantity(Integer.parseInt(productModel.getQuantity()));
+    	product.setPrice(Double.parseDouble(productModel.getPrice()));
+        
+        when(productService.createProduct(productModel)).thenReturn(product);
+    	
+    	// act
+        Product productCreated = productService.createProduct(productModel);        
+    	
+    	// assert
+        assertEquals("Test Product", productCreated.getName());
+        assertEquals(10.0, productCreated.getPrice(), 0);
+    }
+    
+    @Test
+    public void deleteProduct_addingProductToRemove_removesProductById() {
     	//TODO
     	
     	// arrange
@@ -104,18 +131,7 @@ public class ProductServiceTest {
     }
     
     @Test
-    public void deleteProduct_stateUnderTest_removesProductById() {
-    	//TODO
-    	
-    	// arrange
-    	
-    	// act
-    	
-    	// assert
-    }
-    
-    @Test
-    public void updateProductQuantities_stateUnderTest_updatesExistingProductQuantityOrRemovesProduct() {
+    public void updateProductQuantities_stateUnderTest_updatesExistingProductQuantity() {
     	//TODO
     	
     	// arrange

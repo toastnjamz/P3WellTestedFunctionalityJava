@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Objects;
 
+// Annotating as "Entity" marks as JPA entity class, which grants the ability to represent objects in the database. 
 @Entity
 public class Product {
 
