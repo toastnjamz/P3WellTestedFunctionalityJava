@@ -2,6 +2,7 @@ package com.openclassrooms.shopmanager.product;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -12,6 +13,8 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 /**
  * Take this test method as a template to write your test methods for ProductService and OrderService.
@@ -93,9 +96,7 @@ public class ProductServiceTest {
     }
     
     @Test
-    public void createProduct_addingOneNewProduct_savesNewProductToDb() {
-    	//TODO
-    	
+    public void createProduct_addingNewProduct_savesNewProductToDb() {	
     	// arrange
     	ProductModel productModel = new ProductModel();
     	productModel.setId(1L);
@@ -121,13 +122,16 @@ public class ProductServiceTest {
     
     @Test
     public void deleteProduct_addingProductToRemove_removesProductById() {
-    	//TODO
-    	
     	// arrange
+    	Long productId = 1L;
+    	ArgumentCaptor<Long> idCaptor =  ArgumentCaptor.forClass(Long.class);
     	
     	// act
+    	productService.deleteProduct(productId);
     	
     	// assert
+    	verify(productRepository, times(1)).deleteById(idCaptor.capture());
+    	assertEquals(1L, idCaptor.getValue().byteValue(), 0);
     }
     
     @Test
