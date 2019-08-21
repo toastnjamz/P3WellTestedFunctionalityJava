@@ -7,6 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.openclassrooms.shopmanager.order.Cart;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -122,26 +124,38 @@ public class ProductServiceTest {
     
     @Test
     public void deleteProduct_addingProductToRemove_removesProductById() {
-    	// arrange
+    	// arrange: creating a productId and argument captor for that id
     	Long productId = 1L;
-    	ArgumentCaptor<Long> idCaptor =  ArgumentCaptor.forClass(Long.class);
+    	ArgumentCaptor<Long> productIdCaptor =  ArgumentCaptor.forClass(Long.class);
     	
-    	// act
+    	// act: deleting product by productId
     	productService.deleteProduct(productId);
     	
-    	// assert
-    	verify(productRepository, times(1)).deleteById(idCaptor.capture());
-    	assertEquals(1L, idCaptor.getValue().byteValue(), 0);
+    	// assert: verifying that the ProductRepository's deleteById() method was called once with the argument captor value
+    	verify(productRepository, times(1)).deleteById(productIdCaptor.capture());
+    	// checking that the productId and the argument captor value are equal
+    	assertEquals(1L, productIdCaptor.getValue(), 0);
     }
     
     @Test
-    public void updateProductQuantities_stateUnderTest_updatesExistingProductQuantity() {
-    	//TODO
+    public void updateProductQuantities_singleProduct_updatesExistingProductQuantity() {
+    	// arrange: creating a product, creating a cart, and adding that product to the cart
+    	Product product1 = new Product();
+        product1.setId(1L);
+        product1.setQuantity(5);
+        
+        Cart cart = new Cart();
+        cart.addItem(product1, 1);
+        
+        // creating an argument captor of type Product for the updateProductQuantities() method
+        ArgumentCaptor<Product> productArgument = ArgumentCaptor.forClass(Product.class);
+        // searching for product by productId, then assigning it to an Optional type and returning it
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
     	
-    	// arrange
+    	// act: passing the test cart with the product in it to the updateProductQuantities() method 
+        productService.updateProductQuantities(cart);
     	
-    	// act
-    	
-    	// assert
+    	// assert: verifying that the value of the argument captor was saved (once)
+        verify(productRepository, times(1)).save(productArgument.capture());
     }
 }
