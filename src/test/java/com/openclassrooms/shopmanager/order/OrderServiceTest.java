@@ -1,4 +1,6 @@
 package com.openclassrooms.shopmanager.order;
+import com.openclassrooms.shopmanager.product.Product;
+import com.openclassrooms.shopmanager.product.ProductService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,12 +10,14 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 /**
- * Take this test method as a template to write your test methods for ProductService and OrderService.
  * A test method must check if a definite method does its job:
  *
  * Naming follows this popular convention : http://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html
@@ -28,16 +32,24 @@ public class OrderServiceTest {
 
     @Mock
     OrderRepository orderRepository;
+    
+    @Mock
+    ProductService productService;
 
     @Test
-    public void addToCart_stateUnderTest_returnsTrueIfProductAddedToCart() {
-    	//TODO
-    	
+    public void addToCart_addingOneProduct_returnsTrueIfProductAddedToCart() {
     	// arrange
+    	Product product = new Product();
+        product.setId(1L);
+        product.setName("Test Product");
+        
+        when(productService.getByProductId(1L)).thenReturn(product);
     	
     	// act
+        Boolean result = orderService.addToCart(product.getId());
     	
     	// assert
+        assertEquals(true, result);
 	}
     
     @Test

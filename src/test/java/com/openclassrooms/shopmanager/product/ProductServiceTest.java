@@ -37,7 +37,6 @@ public class ProductServiceTest {
 
     @Test
     public void getAllProducts_DbHasData_allDataReturned(){
-
         // arrange
     	Product product1 = new Product();
         product1.setId(1L);
@@ -81,7 +80,7 @@ public class ProductServiceTest {
     }
     
     @Test
-    public void getByProductId_singleProduct_returnsProductById() {
+    public void getByProductId_addingOneProduct_returnsProductById() {
     	// arrange
     	Product product = new Product();
     	product.setId(1L);
@@ -98,7 +97,7 @@ public class ProductServiceTest {
     }
     
     @Test
-    public void createProduct_addingNewProduct_savesNewProductToDb() {	
+    public void createProduct_creatingOneProduct_savesNewProductToDb() {	
     	// arrange
     	ProductModel productModel = new ProductModel();
     	productModel.setId(1L);
@@ -138,7 +137,7 @@ public class ProductServiceTest {
     }
     
     @Test
-    public void updateProductQuantities_singleProduct_updatesExistingProductQuantity() {
+    public void updateProductQuantities_oneProduct_updatesExistingProductQuantity() {
     	// arrange: creating a product, creating a cart, and adding that product to the cart
     	Product product1 = new Product();
         product1.setId(1L);
