@@ -71,8 +71,6 @@ public class OrderServiceTest {
     
     @Test
     public void saveOrder_newOrder_savesOrderToOrderRepository() {
-    	//TODO
-    	
     	// arrange
     	Product product = new Product();
         product.setId(1L);
