@@ -4,10 +4,12 @@ import com.openclassrooms.shopmanager.product.ProductService;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -52,15 +54,48 @@ public class OrderServiceTest {
         assertEquals(true, result);
 	}
     
+    // Not sure if this is an appropriate unit test...
+    @Test(expected = Exception.class)
+    public void addToCart_addingNullProduct_throwsException() {
+    	// arrange
+    	Product product = null;
+        
+        when(productService.getByProductId(null)).thenThrow(new Exception("Product unavailable to add to cart."));
+    	
+    	// act
+        //Boolean result = orderService.addToCart(product.getId());
+    	
+    	// assert
+        //assertEquals(false, result);
+	}
+    
     @Test
-    public void saveOrder_stateUnderTest_savesOrderToOrderRepository() {
+    public void saveOrder_newOrder_savesOrderToOrderRepository() {
     	//TODO
     	
     	// arrange
-    	
+    	Product product = new Product();
+        product.setId(1L);
+        product.setName("Test Product");
+        
+        CartLine cartLine = new CartLine();
+        cartLine.setProduct(product);
+        cartLine.setQuantity(2);
+        
+        List<CartLine> cartLineList = new ArrayList<CartLine>();
+        cartLineList.add(cartLine);
+        
+        Order order = new Order();
+        order.setLines(cartLineList);
+        
+        ArgumentCaptor<Order> orderCaptor =  ArgumentCaptor.forClass(Order.class);
+
     	// act
+        orderService.saveOrder(order);
     	
     	// assert
+        verify(orderRepository, times(1)).save(orderCaptor.capture());
+        assertEquals(order, orderCaptor.getValue());
     }
     
     @Test
