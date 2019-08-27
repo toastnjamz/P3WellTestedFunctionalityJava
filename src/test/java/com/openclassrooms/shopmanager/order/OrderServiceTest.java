@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.mock;
 
 /**
  * A test method must check if a definite method does its job:
@@ -30,13 +31,13 @@ import static org.mockito.Mockito.times;
 public class OrderServiceTest {
 	
     @InjectMocks
-    OrderService orderService;
+    private OrderService orderService;
 
     @Mock
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
     
     @Mock
-    ProductService productService;
+    private ProductService productService;
 
     @Test
     public void addToCart_addingOneProduct_returnsTrueIfProductAddedToCart() {
@@ -54,7 +55,7 @@ public class OrderServiceTest {
         assertEquals(true, result);
 	}
     
-    // Not sure if this is an appropriate unit test...
+    // TODO: Not sure if this is an appropriate unit test...
     @Test(expected = Exception.class)
     public void addToCart_addingNullProduct_throwsException() {
     	// arrange
@@ -69,6 +70,7 @@ public class OrderServiceTest {
         //assertEquals(false, result);
 	}
     
+    //TODO: Remove additional arrange steps
     @Test
     public void saveOrder_newOrder_savesOrderToOrderRepository() {
     	// arrange
@@ -97,14 +99,26 @@ public class OrderServiceTest {
     }
     
     @Test
-    public void getCart_stateUnderTest_returnsCart() {
-    	//TODO
+    public void getCart_currentCart_returnsCart() {
     	
     	// arrange
+    	OrderService mockOfOrderService = mock(OrderService.class);
+
+    	Product product = new Product();
+        product.setId(1L);
+        product.setName("Test Product");
+        
+        Cart cart = new Cart();
+        cart.addItem(product, 2);
     	
+        when(mockOfOrderService.getCart()).thenReturn(cart);
+        
     	// act
+        Cart foundCart = mockOfOrderService.getCart();
     	
     	// assert
+        assertEquals("Test Product", foundCart.getCartLineList().get(0).getProduct().getName());
+        assertEquals(2, foundCart.getCartLineList().get(0).getQuantity());
     }
     
     @Test

@@ -30,10 +30,10 @@ import static org.mockito.Mockito.times;
 public class ProductServiceTest {
 
     @InjectMocks
-    ProductService productService;
+    private ProductService productService;
 
     @Mock
-    ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Test
     public void getAllProducts_DbHasData_allDataReturned(){
@@ -97,7 +97,7 @@ public class ProductServiceTest {
     }
     
     @Test
-    public void createProduct_creatingOneProduct_savesNewProductToDb() {	
+    public void createProduct_addingOneProduct_savesNewProductToDb() {	
     	// arrange
     	ProductModel productModel = new ProductModel();
     	productModel.setId(1L);
@@ -125,36 +125,38 @@ public class ProductServiceTest {
     public void deleteProduct_addingProductToRemove_removesProductById() {
     	// arrange: creating a productId and argument captor for that id
     	Long productId = 1L;
-    	ArgumentCaptor<Long> productIdCaptor =  ArgumentCaptor.forClass(Long.class);
+    	ArgumentCaptor<Long> productIdCaptor = ArgumentCaptor.forClass(Long.class);
+    	
+    	//when(productService.deleteProduct(1L)).thenReturn()
     	
     	// act: deleting product by productId
     	productService.deleteProduct(productId);
     	
-    	// assert: verifying that the ProductRepository's deleteById() method was called once with the argument captor value
+    	// assert: verifying that ProductRepository's deleteById() method was called once, capturing the argument with ArgumentCaptor
     	verify(productRepository, times(1)).deleteById(productIdCaptor.capture());
     	// checking that the productId and the argument captor value are equal
     	assertEquals(1L, productIdCaptor.getValue(), 0);
     }
     
     @Test
-    public void updateProductQuantities_oneProduct_updatesExistingProductQuantity() {
-    	// arrange: creating a product, creating a cart, and adding that product to the cart
-    	Product product1 = new Product();
-        product1.setId(1L);
-        product1.setQuantity(5);
+    public void updateProductQuantities_addingOneProduct_updatesExistingProductQuantity() {
+    	// arrange: creating a product, creating a cart, and adding the product to the cart
+    	Product product = new Product();
+        product.setId(1L);
+        product.setQuantity(5);
         
         Cart cart = new Cart();
-        cart.addItem(product1, 1);
+        cart.addItem(product, 1);
         
         // creating an argument captor of type Product for the updateProductQuantities() method
         ArgumentCaptor<Product> productArgument = ArgumentCaptor.forClass(Product.class);
-        // searching for product by productId, then assigning it to an Optional type and returning it
-        when(productRepository.findById(1L)).thenReturn(Optional.of(product1));
+        // search for product by productId, then assign it to an Optional type and returning it
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
     	
     	// act: passing the test cart with the product in it to the updateProductQuantities() method 
         productService.updateProductQuantities(cart);
     	
-    	// assert: verifying that the value of the argument captor was saved (once)
+    	// assert: verifying that the value of the argument captor was saved (method called once)
         verify(productRepository, times(1)).save(productArgument.capture());
     }
 }
