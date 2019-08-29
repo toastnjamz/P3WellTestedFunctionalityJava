@@ -44,7 +44,6 @@ public class OrderServiceTest {
     	// arrange
     	Product product = new Product();
         product.setId(1L);
-        product.setName("Test Product");
         
         when(productService.getByProductId(1L)).thenReturn(product);
     	
@@ -70,13 +69,11 @@ public class OrderServiceTest {
         //assertEquals(false, result);
 	}
     
-    //TODO: Remove additional arrange steps
     @Test
     public void saveOrder_newOrder_savesOrderToOrderRepository() {
     	// arrange
     	Product product = new Product();
         product.setId(1L);
-        product.setName("Test Product");
         
         CartLine cartLine = new CartLine();
         cartLine.setProduct(product);
@@ -100,7 +97,6 @@ public class OrderServiceTest {
     
     @Test
     public void getCart_currentCart_returnsCart() {
-    	
     	// arrange
     	OrderService mockOfOrderService = mock(OrderService.class);
 
@@ -121,19 +117,48 @@ public class OrderServiceTest {
         assertEquals(2, foundCart.getCartLineList().get(0).getQuantity());
     }
     
+//    @Test
+//    public void removeFromCart_addingProductToRemove_removesProductByIdFromCart() {
+//    	//TODO: Fix so the return type of the original method is void
+//    	
+//    	// arrange
+//    	Product product = new Product();
+//        product.setId(1L);
+//        product.setPrice(12.0);
+//        
+//        Cart cart = new Cart();
+//        cart.addItem(product, 1);
+//        
+//        when(productService.getByProductId(1L)).thenReturn(product);
+//    	
+//    	// act
+//        orderService.removeFromCart(product.getId());
+//    	
+//    	// assert
+//        //assertEquals(0.0, cart.getTotalValue());
+//        assertEquals(0.0, cart.getTotalValue());
+//    }
+    
     @Test
-    public void removeFromCart_stateUnderTest_removesProductByIdFromCart() {
-    	//TODO
-    	
+    public void removeFromCart_addingProductToRemove_removesProductByIdFromCart() {
     	// arrange
+    	Product product = new Product();
+        product.setId(1L);
+        product.setPrice(12.0);
+        
+        when(productService.getByProductId(1L)).thenReturn(product);
     	
     	// act
+        orderService.addToCart(product.getId());
+        orderService.removeFromCart(product.getId());
+        Cart updatedCart = orderService.getCart();
     	
     	// assert
+        assertEquals(true, updatedCart.getCartLineList().isEmpty());
     }
     
     @Test
-    public void isCartEmpty_stateUnderTest_returnsTrueIfCartIsEmpty() {
+    public void isCartEmpty_checkingForEmptyCart_returnsTrue() {
     	//TODO
     	
     	// arrange

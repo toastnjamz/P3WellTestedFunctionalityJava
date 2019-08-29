@@ -62,11 +62,9 @@ public class ProductServiceTest {
         // arrange
     	Product product1 = new Product();
         product1.setId(1L);
-        product1.setName("First product");
 
         Product product2 = new Product();
         product2.setId(2L);
-        product2.setName("First product");
 
         when(productRepository.findAllByOrderByIdDesc()).thenReturn(Arrays.asList(product1, product2));
 
