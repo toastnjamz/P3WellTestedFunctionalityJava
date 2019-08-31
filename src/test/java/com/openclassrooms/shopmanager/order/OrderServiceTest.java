@@ -85,6 +85,8 @@ public class OrderServiceTest {
         Order order = new Order();
         order.setLines(cartLineList);
         
+        //TODO: add a when() statement
+        
         ArgumentCaptor<Order> orderCaptor =  ArgumentCaptor.forClass(Order.class);
 
     	// act
@@ -102,7 +104,7 @@ public class OrderServiceTest {
 
     	Product product = new Product();
         product.setId(1L);
-        product.setName("Test Product");
+        //product.setName("Test Product");
         
         Cart cart = new Cart();
         cart.addItem(product, 2);
@@ -113,7 +115,7 @@ public class OrderServiceTest {
         Cart foundCart = mockOfOrderService.getCart();
     	
     	// assert
-        assertEquals("Test Product", foundCart.getCartLineList().get(0).getProduct().getName());
+        assertEquals(1L, foundCart.getCartLineList().get(0).getProduct().getId(), 0);
         assertEquals(2, foundCart.getCartLineList().get(0).getQuantity());
     }
     
@@ -154,18 +156,28 @@ public class OrderServiceTest {
         Cart updatedCart = orderService.getCart();
     	
     	// assert
+        //TODO: Do I need to add another assert to cover adding the item to the cart?
         assertEquals(true, updatedCart.getCartLineList().isEmpty());
     }
     
     @Test
     public void isCartEmpty_checkingForEmptyCart_returnsTrue() {
-    	//TODO
-    	
     	// arrange
+    	Product product = new Product();
+        product.setId(1L);
+        
+        orderService.addToCart(1L);
+        orderService.removeFromCart(1L);
+    	
+    	Cart foundCart = orderService.getCart();
+    	
+    	when(orderService.getCart().getCartLineList().isEmpty()).thenReturn(true);
     	
     	// act
+    	boolean emptyCart = foundCart.getCartLineList().isEmpty();
     	
     	// assert
+    	assertEquals(emptyCart, orderService.isCartEmpty());
     }
     
     @Test
