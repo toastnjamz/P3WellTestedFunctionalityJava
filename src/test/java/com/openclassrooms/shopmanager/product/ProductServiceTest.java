@@ -1,5 +1,6 @@
 package com.openclassrooms.shopmanager.product;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -34,17 +35,23 @@ public class ProductServiceTest {
 
     @Mock
     private ProductRepository productRepository;
+    
+//    @Before
+//    public static void setUp() {
+//    	Product product1 = new Product();
+//        product1.setId(1L);
+//        Product product2 = new Product();
+//        product2.setId(2L);	
+//    }
 
     @Test
     public void getAllProducts_DbHasData_allDataReturned(){
         // arrange
     	Product product1 = new Product();
         product1.setId(1L);
-        //product1.setName("First product");
 
         Product product2 = new Product();
         product2.setId(2L);
-        //product2.setName("First product");
 
         when(productRepository.findAll()).thenReturn(Arrays.asList(product1, product2));
 
@@ -54,7 +61,6 @@ public class ProductServiceTest {
         // assert
         assertEquals(2, products.size());
         assertEquals(1L, products.get(0).getId() , 0);
-        //assertEquals(2L, products.get(1).getId() , 0);
     }
     
     @Test
@@ -74,7 +80,6 @@ public class ProductServiceTest {
         // assert
         assertEquals(2, products.size());
         assertEquals(1L, products.get(0).getId() , 0);
-        //assertEquals(2L, products.get(1).getId() , 0);
     }
     
     @Test
@@ -82,7 +87,6 @@ public class ProductServiceTest {
     	// arrange
     	Product product = new Product();
     	product.setId(1L);
-        //product.setName("Test Product");
     	
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
         
@@ -90,8 +94,7 @@ public class ProductServiceTest {
         Product foundProduct = productService.getByProductId(product.getId());
     	
     	// assert
-        assertEquals(1L, foundProduct.getId(), 0);
-        //assertEquals("Test Product", foundProduct.getName()); 
+        assertEquals(1L, foundProduct.getId(), 0); 
     }
     
     @Test
@@ -99,13 +102,11 @@ public class ProductServiceTest {
     	// arrange
     	ProductModel productModel = new ProductModel();
     	productModel.setId(1L);
-    	//productModel.setName("Test Product");
     	productModel.setQuantity("2");
     	productModel.setPrice("10.0");
     	
     	Product product = new Product();
     	product.setId(productModel.getId());
-    	//product.setName(productModel.getName());
     	product.setQuantity(Integer.parseInt(productModel.getQuantity()));
     	product.setPrice(Double.parseDouble(productModel.getPrice()));
         
@@ -121,25 +122,25 @@ public class ProductServiceTest {
     
     @Test
     public void deleteProduct_addingProductToRemove_removesProductById() {
-    	// arrange: creating a productId and argument captor for that id
+    	// arrange
     	Long productId = 1L;
     	ArgumentCaptor<Long> productIdCaptor = ArgumentCaptor.forClass(Long.class);
     	
     	//TODO: Write a when() statement
-    	//when(productService.deleteProduct(1L)).thenReturn()
+    	//when(productRepository.deleteById(productId)).thenAnswer(productId?);
     	
-    	// act: deleting product by productId
+    	// act
     	productService.deleteProduct(productId);
     	
     	// assert: verifying that ProductRepository's deleteById() method was called once, capturing the argument with ArgumentCaptor
     	verify(productRepository, times(1)).deleteById(productIdCaptor.capture());
-    	// checking that the productId and the argument captor value are equal
+    	// checking that the productId and the argument captor value are equal (with no acceptable delta)
     	assertEquals(1L, productIdCaptor.getValue(), 0);
     }
     
     @Test
     public void updateProductQuantities_addingOneProduct_updatesExistingProductQuantity() {
-    	// arrange: creating a product, creating a cart, and adding the product to the cart
+    	// arrange
     	Product product = new Product();
         product.setId(1L);
         product.setQuantity(5);
@@ -147,12 +148,11 @@ public class ProductServiceTest {
         Cart cart = new Cart();
         cart.addItem(product, 1);
         
-        // creating an argument captor of type Product for the updateProductQuantities() method
         ArgumentCaptor<Product> productArgument = ArgumentCaptor.forClass(Product.class);
-        // search for product by productId, then assign it to an Optional type and returning it
+        // Stub: search for product by productId, then assign it to an Optional type and return it
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
     	
-    	// act: passing the test cart with the product in it to the updateProductQuantities() method 
+    	// act
         productService.updateProductQuantities(cart);
     	
     	// assert: verifying that the value of the argument captor was saved (method called once)

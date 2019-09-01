@@ -16,8 +16,7 @@ public class OrderService {
 
 
     @Autowired
-    public OrderService(OrderRepository orderRepository, ProductService productService)
-    {
+    public OrderService(OrderRepository orderRepository, ProductService productService) {
         this.orderRepository = orderRepository;
         this.productService = productService;
     }
@@ -35,8 +34,7 @@ public class OrderService {
      *
      * @param order Order to be saved
      */
-    public void saveOrder(Order order)
-    {
+    public void saveOrder(Order order) {
         orderRepository.save(order);
         productService.updateProductQuantities(this.cart);
     }
@@ -60,7 +58,6 @@ public class OrderService {
     }
 
     public void createOrder(Order order) {
-
         order.setLines(getCart().getCartLineList());
         saveOrder(order);
         this.cart.clear();
