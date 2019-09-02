@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.doNothing;
 
 /**
  * Take this test method as a template to write your test methods for ProductService and OrderService.
@@ -126,8 +127,8 @@ public class ProductServiceTest {
     	Long productId = 1L;
     	ArgumentCaptor<Long> productIdCaptor = ArgumentCaptor.forClass(Long.class);
     	
-    	//TODO: Write a when() statement
-    	//when(productRepository.deleteById(productId)).thenAnswer(productId?);
+    	//TODO: create a stub that works
+    	//doNothing().when(productService).deleteProduct(productIdCaptor.capture());
     	
     	// act
     	productService.deleteProduct(productId);

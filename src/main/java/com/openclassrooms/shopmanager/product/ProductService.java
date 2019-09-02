@@ -36,7 +36,7 @@ public class ProductService {
         return productRepository.findById(productId).get();
     }
 
-    // Updating method to return the saved product instead of void
+    // Updated method to return the saved product instead of void
     public Product createProduct(ProductModel productModel) {
         Product product = new Product();
         product.setDescription(productModel.getDescription());

@@ -18,6 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.assertThat;
 
@@ -66,12 +67,11 @@ public class OrderServiceTest {
     public void saveOrder_newOrder_savesOrderToOrderRepository() {
     	// arrange
         Order order = new Order();
-        //order.setLines(cartLineList);
         
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         
-        //TODO: add a when() statement
-        //when(orderService.saveOrder(order)).then();
+        //TODO: create a stub that works
+        //doNothing().when(orderService).saveOrder(orderCaptor.capture());
 
     	// act
         orderService.saveOrder(order);
@@ -122,7 +122,7 @@ public class OrderServiceTest {
     }
     
     @Test
-    public void isCartEmpty_checkingForEmptyCart_returnsTrue() {
+    public void isCartEmpty_addingAndRemovingProduct_returnsTrue() {
     	// arrange
     	Product product = new Product();
         product.setId(1L);
@@ -132,8 +132,8 @@ public class OrderServiceTest {
     	
     	Cart foundCart = orderService.getCart();
     	
-    	//TODO: Write when() statement
-    	//when(orderService.getCart().getCartLineList().isEmpty()).doAnswer(?);
+    	//TODO: create a stub that works
+    	//when(orderService.getCart().getCartLineList().isEmpty()).thenReturn(true);
     	
     	// act
     	boolean emptyCart = foundCart.getCartLineList().isEmpty();
@@ -143,13 +143,21 @@ public class OrderServiceTest {
     }
     
     @Test
-    public void createOrder_savingNewOrder_savesOrderAndClearsCart() {
+    public void createOrder_creatingNewOrderToSave_savesOrderAndClearsCart() {
     	// arrange
     	Order order = new Order();
     	
+        ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        
+        //TODO: create a stub that works
+        //doNothing().when(orderService).createOrder(orderCaptor.capture());
+    	
     	// act
+    	orderService.createOrder(order);
     	
     	// assert
+        verify(orderRepository, times(1)).save(orderCaptor.capture());
+    	assertEquals(order, orderCaptor.getValue());
     }
 
 }
