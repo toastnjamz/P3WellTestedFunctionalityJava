@@ -36,7 +36,7 @@ public class ProductController {
 
     @GetMapping("/admin/product")
     public String productForm(Model model) {
-        model.addAttribute("product",new ProductModel());
+        model.addAttribute("product", new ProductModel());
         return "product";
     }
 

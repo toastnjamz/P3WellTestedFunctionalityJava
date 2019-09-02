@@ -54,7 +54,6 @@ public class ProductModel {
     }
 
     public void setPrice(String price) {
-    	// TODO add validation to setter methods for form validation
         this.price = price;
     }
 }
