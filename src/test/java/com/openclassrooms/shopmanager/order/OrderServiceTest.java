@@ -56,11 +56,18 @@ public class OrderServiceTest {
         assertEquals(true, result);
 	}
     
-    // TODO: Not sure if this is an appropriate unit test for a bad case scenario...
+    //TODO: Do I need the act and assert portions of this test?
     @Test(expected = Exception.class)
     public void addToCart_addingNullProduct_throwsException() {
     	// arrange
+    	Product product = new Product();
         when(productService.getByProductId(null)).thenThrow(new Exception("Error: Product does not exist."));
+        
+    	// act
+        Boolean result = orderService.addToCart(product.getId());
+    	
+    	// assert
+        assertEquals(true, result);
 	}
     
     @Test

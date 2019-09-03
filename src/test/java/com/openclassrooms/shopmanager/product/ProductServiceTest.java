@@ -98,6 +98,21 @@ public class ProductServiceTest {
         assertEquals(1L, foundProduct.getId(), 0); 
     }
     
+    //TODO: Do I need the act and assert portions of this test?
+    @Test(expected = Exception.class)
+    public void getByProductId_addingNullProduct_throwsException() {
+    	// arrange
+    	Product product = new Product();
+    	
+        when(productRepository.findById(null)).thenThrow(new Exception("Error: Product does not exist."));
+        
+        // act
+        Product foundProduct = productService.getByProductId(product.getId());
+    	
+    	// assert
+        assertEquals(1L, foundProduct.getId(), 0); 
+    }
+    
     @Test
     public void createProduct_addingOneProduct_savesNewProductToDb() {	
     	// arrange
