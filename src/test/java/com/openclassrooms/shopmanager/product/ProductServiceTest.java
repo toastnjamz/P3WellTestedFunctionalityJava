@@ -1,4 +1,5 @@
 package com.openclassrooms.shopmanager.product;
+import com.openclassrooms.shopmanager.order.Cart;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -7,8 +8,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import com.openclassrooms.shopmanager.order.Cart;
+import org.mockito.MockitoAnnotations;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 
 /**
  * Take this test method as a template to write your test methods for ProductService and OrderService.
@@ -37,8 +38,14 @@ public class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
     
+    // Adding setup() method to make sure productRepository is injected into productService
+    @Before
+    public void setup() {
+    	MockitoAnnotations.initMocks(this);
+    }
+    
 //    @Before
-//    public static void setUp() {
+//    public void ProductServiceTest() {
 //    	Product product1 = new Product();
 //        product1.setId(1L);
 //        Product product2 = new Product();
@@ -98,20 +105,25 @@ public class ProductServiceTest {
         assertEquals(1L, foundProduct.getId(), 0); 
     }
     
-    //TODO: Do I need the act and assert portions of this test?
-    @Test(expected = Exception.class)
-    public void getByProductId_addingNullProduct_throwsException() {
-    	// arrange
-    	Product product = new Product();
-    	
-        when(productRepository.findById(null)).thenThrow(new Exception("Error: Product does not exist."));
-        
-        // act
-        Product foundProduct = productService.getByProductId(product.getId());
-    	
-    	// assert
-        assertEquals(1L, foundProduct.getId(), 0); 
-    }
+//    //TODO: How to set up testing bad case input/parameters?
+//    @Test(expected = NullPointerException.class)
+//    public void getByProductId_addingNullProduct_throwsException() {
+//    	// arrange
+//    	Product product = null;
+//        when(productRepository.findById(null)).thenThrow(new NullPointerException("Error: Product does not exist."));
+//        
+//        // act
+//        productService.getByProductId(product.getId());
+//    }
+//    
+//    //OR
+//    
+//    //TODO: How to set up testing bad case input/parameters?
+//    @Test(expected = Exception.class)
+//    public void getByProductId_addingNullProductId_throwsException() {
+//    	// arrange
+//    	when(productRepository.findById(null)).thenThrow(new Exception("Error: Product does not exist."));
+//	}
     
     @Test
     public void createProduct_addingOneProduct_savesNewProductToDb() {	
@@ -139,14 +151,15 @@ public class ProductServiceTest {
     @Test
     public void deleteProduct_addingProductToRemove_removesProductById() {
     	// arrange
-    	Long productId = 1L;
+    	//ProductService productService = mock(ProductService.class);
+    	Product product = new Product();
+    	product.setId(1L);
     	ArgumentCaptor<Long> productIdCaptor = ArgumentCaptor.forClass(Long.class);
     	
-    	//TODO: create a stub that works
-    	//doNothing().when(productService).deleteProduct(productIdCaptor.capture());
+        doNothing().when(productRepository).deleteById(productIdCaptor.capture());
     	
     	// act
-    	productService.deleteProduct(productId);
+    	productService.deleteProduct(product.getId());
     	
     	// assert: verifying that ProductRepository's deleteById() method was called once, capturing the argument with ArgumentCaptor
     	verify(productRepository, times(1)).deleteById(productIdCaptor.capture());

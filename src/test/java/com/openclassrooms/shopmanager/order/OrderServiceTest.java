@@ -2,11 +2,13 @@ package com.openclassrooms.shopmanager.order;
 import com.openclassrooms.shopmanager.product.Product;
 import com.openclassrooms.shopmanager.product.ProductService;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -40,6 +42,12 @@ public class OrderServiceTest {
     
     @Mock
     private ProductService productService;
+    
+    // Adding setup() method to make sure productRepository is injected into productService
+    @Before
+    public void setup() {
+    	MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void addToCart_addingOneProduct_returnsTrueIfProductAddedToCart() {
@@ -56,19 +64,13 @@ public class OrderServiceTest {
         assertEquals(true, result);
 	}
     
-    //TODO: Do I need the act and assert portions of this test?
-    @Test(expected = Exception.class)
-    public void addToCart_addingNullProduct_throwsException() {
-    	// arrange
-    	Product product = new Product();
-        when(productService.getByProductId(null)).thenThrow(new Exception("Error: Product does not exist."));
-        
-    	// act
-        Boolean result = orderService.addToCart(product.getId());
-    	
-    	// assert
-        assertEquals(true, result);
-	}
+//    //TODO: How to set up testing bad case input/parameters?
+//    @Test(expected = Exception.class)
+//    public void addToCart_addingNullProduct_throwsException() {
+//    	// arrange
+//    	Product product = new Product();
+//        when(productService.getByProductId(null)).thenThrow(new Exception("Error: Product does not exist."));
+//	}
     
     @Test
     public void saveOrder_newOrder_savesOrderToOrderRepository() {
@@ -78,7 +80,7 @@ public class OrderServiceTest {
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         
         //TODO: create a stub that works
-        //doNothing().when(orderService).saveOrder(orderCaptor.capture());
+        doNothing().when(orderService).saveOrder(orderCaptor.capture());
 
     	// act
         orderService.saveOrder(order);
