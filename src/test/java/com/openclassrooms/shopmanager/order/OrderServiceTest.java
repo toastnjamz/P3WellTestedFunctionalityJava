@@ -43,7 +43,7 @@ public class OrderServiceTest {
     @Mock
     private ProductService productService;
     
-    // Adding setup() method to make sure productRepository is injected into productService
+    // Adding setup() method to make sure orderRepository and productService are injected into OrderService
     @Before
     public void setup() {
     	MockitoAnnotations.initMocks(this);
@@ -79,8 +79,9 @@ public class OrderServiceTest {
         
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         
-        //TODO: create a stub that works
-        doNothing().when(orderService).saveOrder(orderCaptor.capture());
+        doNothing().when(orderRepository).save(orderCaptor.capture());
+        // How to test this as well?
+        //productService.updateProductQuantities(this.cart)
 
     	// act
         orderService.saveOrder(order);
