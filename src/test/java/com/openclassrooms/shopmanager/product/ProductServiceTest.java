@@ -115,9 +115,9 @@ public class ProductServiceTest {
 //        // act
 //        productService.getByProductId(product.getId());
 //    }
-//    
-//    //OR
-//    
+    
+    //OR
+    
 //    //TODO: How to set up testing bad case input/parameters?
 //    @Test(expected = Exception.class)
 //    public void getByProductId_addingNullProductId_throwsException() {
@@ -186,5 +186,6 @@ public class ProductServiceTest {
     	
     	// assert: verifying that the value of the argument captor was saved (method called once)
         verify(productRepository, times(1)).save(productArgument.capture());
+        //TODO add remaining three tests
     }
 }
