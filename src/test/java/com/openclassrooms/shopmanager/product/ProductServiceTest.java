@@ -1,4 +1,5 @@
 package com.openclassrooms.shopmanager.product;
+
 import com.openclassrooms.shopmanager.order.Cart;
 
 import org.junit.Before;
@@ -105,36 +106,18 @@ public class ProductServiceTest {
         assertEquals(1L, foundProduct.getId(), 0); 
     }
     
-//    //TODO: How to set up testing bad case input/parameters?
-//    @Test(expected = NullPointerException.class)
-//    public void getByProductId_addingNullProduct_throwsException() {
-//    	// arrange
-//    	Product product = null;
-//        when(productRepository.findById(null)).thenThrow(new NullPointerException("Error: Product does not exist."));
-//        
-//        // act
-//        productService.getByProductId(product.getId());
-//    }
-    
-    //OR
-    
-//    //TODO: How to set up testing bad case input/parameters?
-//    @Test(expected = Exception.class)
-//    public void getByProductId_addingNullProductId_throwsException() {
-//    	// arrange
-//    	when(productRepository.findById(null)).thenThrow(new Exception("Error: Product does not exist."));
-//	}
-    
     @Test
     public void createProduct_addingOneProduct_savesNewProductToDb() {	
     	// arrange
     	ProductModel productModel = new ProductModel();
     	productModel.setId(1L);
+    	productModel.setName("Samsung Galaxy S9");
     	productModel.setQuantity("2");
-    	productModel.setPrice("10.0");
+    	productModel.setPrice("800.0");
     	
     	Product product = new Product();
     	product.setId(productModel.getId());
+    	product.setName(productModel.getName());
     	product.setQuantity(Integer.parseInt(productModel.getQuantity()));
     	product.setPrice(Double.parseDouble(productModel.getPrice()));
         
@@ -145,13 +128,12 @@ public class ProductServiceTest {
     	
     	// assert
         assertEquals(1L, productCreated.getId(), 0);
-        assertEquals(10.0, productCreated.getPrice(), 0);
+        assertEquals("Samsung Galaxy S9", productCreated.getName());
     }
     
     @Test
     public void deleteProduct_addingProductToRemove_removesProductById() {
     	// arrange
-    	//ProductService productService = mock(ProductService.class);
     	Product product = new Product();
     	product.setId(1L);
     	ArgumentCaptor<Long> productIdCaptor = ArgumentCaptor.forClass(Long.class);

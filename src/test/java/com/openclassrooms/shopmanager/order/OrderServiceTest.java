@@ -1,4 +1,5 @@
 package com.openclassrooms.shopmanager.order;
+
 import com.openclassrooms.shopmanager.product.Product;
 import com.openclassrooms.shopmanager.product.ProductService;
 
@@ -8,13 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -22,13 +18,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
-import static org.junit.Assert.assertThat;
-
-/**
- * A test method must check if a definite method does its job:
- *
- * Naming follows this popular convention : http://osherove.com/blog/2005/4/3/naming-standards-for-unit-tests.html
- */
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -64,14 +53,6 @@ public class OrderServiceTest {
         assertEquals(true, result);
 	}
     
-//    //TODO: How to set up testing bad case input/parameters?
-//    @Test(expected = Exception.class)
-//    public void addToCart_addingNullProduct_throwsException() {
-//    	// arrange
-//    	Product product = new Product();
-//        when(productService.getByProductId(null)).thenThrow(new Exception("Error: Product does not exist."));
-//	}
-    
     @Test
     public void saveOrder_newOrder_savesOrderToOrderRepository() {
     	// arrange
@@ -80,8 +61,7 @@ public class OrderServiceTest {
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         
         doNothing().when(orderRepository).save(orderCaptor.capture());
-        // How to test this as well?
-        //productService.updateProductQuantities(this.cart)
+        // How to test the second method in saveOrder(), productService.updateProductQuantities(this.cart)
 
     	// act
         orderService.saveOrder(order);
@@ -105,11 +85,11 @@ public class OrderServiceTest {
         when(mockOfOrderService.getCart()).thenReturn(cart);
         
     	// act
-        Cart foundCart = mockOfOrderService.getCart();
+        Cart resultingCart = mockOfOrderService.getCart();
     	
     	// assert
-        assertEquals(1L, foundCart.getCartLineList().get(0).getProduct().getId(), 0);
-        assertEquals(2, foundCart.getCartLineList().get(0).getQuantity());
+        assertEquals(1L, resultingCart.getCartLineList().get(0).getProduct().getId(), 0);
+        assertEquals(2, resultingCart.getCartLineList().get(0).getQuantity());
     }
     
     @Test
@@ -117,17 +97,16 @@ public class OrderServiceTest {
     	// arrange
     	Product product = new Product();
         product.setId(1L);
-        product.setPrice(12.0);
         
         when(productService.getByProductId(1L)).thenReturn(product);
     	
     	// act
+        //TODO: Do I need to add another assert to verify I added the item to the cart?
         orderService.addToCart(product.getId());
         orderService.removeFromCart(product.getId());
         Cart updatedCart = orderService.getCart();
     	
     	// assert
-        //TODO: Find out if I need to add another assert to cover adding the item to the cart?
         assertEquals(true, updatedCart.getCartLineList().isEmpty());
     }
     
@@ -140,13 +119,14 @@ public class OrderServiceTest {
         orderService.addToCart(1L);
         orderService.removeFromCart(1L);
     	
-    	Cart foundCart = orderService.getCart();
+    	Cart resultingCart = orderService.getCart();
     	
     	//TODO: create a stub that works
     	//when(orderService.getCart().getCartLineList().isEmpty()).thenReturn(true);
+    	//when(orderService.isCartEmpty()).thenReturn(true);
     	
     	// act
-    	boolean emptyCart = foundCart.getCartLineList().isEmpty();
+    	boolean emptyCart = resultingCart.getCartLineList().isEmpty();
     	
     	// assert
     	assertEquals(true, emptyCart);
