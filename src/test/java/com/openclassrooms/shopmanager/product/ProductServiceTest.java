@@ -3,6 +3,7 @@ package com.openclassrooms.shopmanager.product;
 import com.openclassrooms.shopmanager.order.Cart;
 
 import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -20,7 +21,6 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.mock;
 
 /**
  * Take this test method as a template to write your test methods for ProductService and OrderService.
@@ -45,13 +45,10 @@ public class ProductServiceTest {
     	MockitoAnnotations.initMocks(this);
     }
     
-//    @Before
-//    public void ProductServiceTest() {
-//    	Product product1 = new Product();
-//        product1.setId(1L);
-//        Product product2 = new Product();
-//        product2.setId(2L);	
-//    }
+    @AfterClass
+    public static void afterClass() {
+    	System.out.println("ProductServiceTest testing complete.");
+    }
 
     @Test
     public void getAllProducts_DbHasData_allDataReturned(){
@@ -149,12 +146,42 @@ public class ProductServiceTest {
     	assertEquals(1L, productIdCaptor.getValue(), 0);
     }
     
+//    @Test
+//    public void updateProductQuantities_checkingIfProductOptionalExists_updatesProductQuantity() {
+//    	// arrange
+//    	Product product = new Product();
+//        product.setId(1L);
+//        product.setQuantity(3);
+//        
+//        Cart cart = new Cart();
+//        cart.addItem(product, 1);
+//        
+//        ArgumentCaptor<Product> productArgument = ArgumentCaptor.forClass(Product.class);
+//        // Stub: search for product by productId, then assign it to an Optional type and return it
+//        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+//        
+//    	// act
+//        productService.updateProductQuantities(cart);
+//    	
+//    	// assert: verifying that the value of the argument captor was saved in the repository (method called once)
+//        verify(productRepository, times(1)).save(productArgument.capture());
+//        
+//        verify(product.setQuantity());
+//        assertEquals(product, productArgument.getValue());
+//        
+//        assertEquals(2, product.getQuantity(), 0);
+//        
+//        if (productOptional.isPresent()){
+//        Product product = productOptional.get();
+//        product.setQuantity(product.getQuantity() - cartLine.getQuantity());
+//    }
+    
     @Test
-    public void updateProductQuantities_addingOneProduct_updatesExistingProductQuantity() {
+    public void updateProductQuantities_addingOneProduct_savesProductToRepository() {
     	// arrange
     	Product product = new Product();
         product.setId(1L);
-        product.setQuantity(5);
+        product.setQuantity(2);
         
         Cart cart = new Cart();
         cart.addItem(product, 1);
@@ -166,8 +193,31 @@ public class ProductServiceTest {
     	// act
         productService.updateProductQuantities(cart);
     	
-    	// assert: verifying that the value of the argument captor was saved (method called once)
+    	// assert: verifying that the value of the argument captor was saved in the repository (method called once)
         verify(productRepository, times(1)).save(productArgument.capture());
-        //TODO add remaining three tests
+        assertEquals(product, productArgument.getValue());
+    }
+    
+    @Test
+    public void updateProductQuantities_addingProductWithZeroQuantity_deletesProductFromRepository() {
+    	// arrange
+    	Product product = new Product();
+        product.setId(1L);
+        product.setQuantity(0);
+        
+        Cart cart = new Cart();
+        cart.addItem(product, 0);
+        //cart.removeLine(product);
+        
+        ArgumentCaptor<Product> productArgument = ArgumentCaptor.forClass(Product.class);
+        // Stub: search for product by productId, then assign it to an Optional type and return it
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+    	
+    	// act
+        productService.updateProductQuantities(cart);
+    	
+    	// assert: verifying that the value of the argument captor was deleted from the repository (method called once)
+        verify(productRepository, times(1)).delete(productArgument.capture());
+        assertEquals(product, productArgument.getValue());
     }
 }

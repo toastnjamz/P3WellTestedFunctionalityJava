@@ -4,6 +4,7 @@ import com.openclassrooms.shopmanager.product.Product;
 import com.openclassrooms.shopmanager.product.ProductService;
 
 import org.junit.Before;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
@@ -13,6 +14,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
@@ -37,6 +39,11 @@ public class OrderServiceTest {
     public void setup() {
     	MockitoAnnotations.initMocks(this);
     }
+    
+    @AfterClass
+    public static void afterClass() {
+    	System.out.println("OrderServiceTest testing complete.");
+    }
 
     @Test
     public void addToCart_addingOneProduct_returnsTrueIfProductAddedToCart() {
@@ -59,16 +66,18 @@ public class OrderServiceTest {
         Order order = new Order();
         
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        ArgumentCaptor<Cart> cartCaptor = ArgumentCaptor.forClass(Cart.class);
         
         doNothing().when(orderRepository).save(orderCaptor.capture());
-        // TODO: Figure out how to test the second method in saveOrder(), productService.updateProductQuantities(this.cart)
 
     	// act
         orderService.saveOrder(order);
     	
     	// assert
         verify(orderRepository, times(1)).save(orderCaptor.capture());
+        verify(productService, times(1)).updateProductQuantities(cartCaptor.capture());
         assertEquals(order, orderCaptor.getValue());
+        assertNotNull(cartCaptor.getValue());
     }
     
     @Test
@@ -98,35 +107,40 @@ public class OrderServiceTest {
     	Product product = new Product();
         product.setId(1L);
         
+        Cart cart = orderService.getCart();
+        
         when(productService.getByProductId(1L)).thenReturn(product);
     	
     	// act
-        //TODO: Do I need to add another assert to verify I added the item to the cart?
         orderService.addToCart(product.getId());
+        assertEquals(false, cart.getCartLineList().isEmpty());
         orderService.removeFromCart(product.getId());
-        Cart updatedCart = orderService.getCart();
+        assertEquals(true, cart.getCartLineList().isEmpty());
     	
     	// assert
-        assertEquals(true, updatedCart.getCartLineList().isEmpty());
+        assertEquals(true, cart.getCartLineList().isEmpty());
     }
     
     @Test
     public void isCartEmpty_addingAndRemovingProduct_returnsTrue() {
     	// arrange
-    	Product product = new Product();
-        product.setId(1L);
+    	//Product product = new Product();
+        //product.setId(1L);
         
-        orderService.addToCart(1L);
-        orderService.removeFromCart(1L);
+        Cart cart = orderService.getCart();
     	
-    	Cart resultingCart = orderService.getCart();
+        //orderService.addToCart(1L);
+        //assertEquals(false, cart.getCartLineList().isEmpty());
+        //orderService.removeFromCart(1L);
+        //assertEquals(true, cart.getCartLineList().isEmpty());
     	
     	//TODO: create a stub that works
-    	//when(orderService.getCart().getCartLineList().isEmpty()).thenReturn(true);
-    	//when(orderService.isCartEmpty()).thenReturn(true);
+        //when(orderService.getCart().getCartLineList().isEmpty()).thenReturn(true);
+        //when(orderService.isCartEmpty()).thenReturn(true);
     	
     	// act
-    	boolean emptyCart = resultingCart.getCartLineList().isEmpty();
+        //boolean emptyCart = orderService.isCartEmpty();
+        boolean emptyCart = cart.getCartLineList().isEmpty();
     	
     	// assert
     	assertEquals(true, emptyCart);
@@ -136,18 +150,23 @@ public class OrderServiceTest {
     public void createOrder_creatingNewOrderToSave_savesOrderAndClearsCart() {
     	// arrange
     	Order order = new Order();
+    	//Cart cart = new Cart();
     	
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
+        ArgumentCaptor<Cart> cartCaptor = ArgumentCaptor.forClass(Cart.class);
         
         //TODO: create a stub that works
-        //doNothing().when(orderService).createOrder(orderCaptor.capture());
+        //doNothing().when(orderService).saveOrder(orderCaptor.capture());
     	
     	// act
     	orderService.createOrder(order);
     	
     	// assert
         verify(orderRepository, times(1)).save(orderCaptor.capture());
+        verify(productService, times(1)).updateProductQuantities(cartCaptor.capture());
     	assertEquals(order, orderCaptor.getValue());
+    	assertNotNull(cartCaptor.getValue());
+    	//assertEquals(cart, cartCaptor.getValue());
+    	//verify(cart, times(1)).clear();
     }
-
 }
