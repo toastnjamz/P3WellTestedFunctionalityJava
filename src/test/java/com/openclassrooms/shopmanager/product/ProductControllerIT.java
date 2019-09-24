@@ -25,13 +25,13 @@ public class ProductControllerIT {
 	@MockBean
 	private ProductService productService;
 	
-	@Test
-	public void createProduct_missingName_displaysErrorMessage() throws Exception {
-		mockMvc.perform(post("/admin/product")
-				.param("price", "10")
-				.param("quantity", "2"))
-				.andExpect(status().is2xxSuccessful());
-	}
+//	@Test
+//	public void createProduct_missingName_displaysErrorMessage() throws Exception {
+//		mockMvc.perform(post("/admin/product")
+//				.param("price", "10")
+//				.param("quantity", "2"))
+//				.andExpect(status().is2xxSuccessful());
+//	}
 	
 	//@Test
 	public void createProduct_missingPrice_displaysErrorMessage() throws Exception {

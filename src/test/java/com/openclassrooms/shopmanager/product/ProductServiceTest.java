@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
@@ -146,35 +147,25 @@ public class ProductServiceTest {
     	assertEquals(1L, productIdCaptor.getValue(), 0);
     }
     
-//    @Test
-//    public void updateProductQuantities_checkingIfProductOptionalExists_updatesProductQuantity() {
-//    	// arrange
-//    	Product product = new Product();
-//        product.setId(1L);
-//        product.setQuantity(3);
-//        
-//        Cart cart = new Cart();
-//        cart.addItem(product, 1);
-//        
-//        ArgumentCaptor<Product> productArgument = ArgumentCaptor.forClass(Product.class);
-//        // Stub: search for product by productId, then assign it to an Optional type and return it
-//        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
-//        
-//    	// act
-//        productService.updateProductQuantities(cart);
-//    	
-//    	// assert: verifying that the value of the argument captor was saved in the repository (method called once)
-//        verify(productRepository, times(1)).save(productArgument.capture());
-//        
-//        verify(product.setQuantity());
-//        assertEquals(product, productArgument.getValue());
-//        
-//        assertEquals(2, product.getQuantity(), 0);
-//        
-//        if (productOptional.isPresent()){
-//        Product product = productOptional.get();
-//        product.setQuantity(product.getQuantity() - cartLine.getQuantity());
-//    }
+    @Test
+    public void updateProductQuantities_checkingProductOptionalExists_updatesProductQuantity() {
+    	// arrange
+    	Product product = new Product();
+        product.setId(1L);
+        product.setQuantity(3);
+        
+        Cart cart = new Cart();
+        cart.addItem(product, 1);
+        
+        // Stub: search for product by productId, then assign it to an Optional type and return it
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        
+    	// act
+        productService.updateProductQuantities(cart);
+    	
+    	// assert
+        assertEquals(2, product.getQuantity());
+    }
     
     @Test
     public void updateProductQuantities_addingOneProduct_savesProductToRepository() {
@@ -187,7 +178,7 @@ public class ProductServiceTest {
         cart.addItem(product, 1);
         
         ArgumentCaptor<Product> productArgument = ArgumentCaptor.forClass(Product.class);
-        // Stub: search for product by productId, then assign it to an Optional type and return it
+
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
     	
     	// act
@@ -210,7 +201,7 @@ public class ProductServiceTest {
         //cart.removeLine(product);
         
         ArgumentCaptor<Product> productArgument = ArgumentCaptor.forClass(Product.class);
-        // Stub: search for product by productId, then assign it to an Optional type and return it
+        
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
     	
     	// act
