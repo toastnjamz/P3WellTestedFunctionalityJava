@@ -3,6 +3,7 @@ package com.openclassrooms.shopmanager.product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
@@ -14,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 @WebMvcTest(ProductController.class)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -25,42 +28,45 @@ public class ProductControllerIT {
 	@MockBean
 	private ProductService productService;
 	
-//	@Test
-//	public void createProduct_missingName_displaysErrorMessage() throws Exception {
-//		mockMvc.perform(post("/admin/product")
-//				.param("price", "10")
-//				.param("quantity", "2"))
-//				.andExpect(status().is2xxSuccessful());
+	@Test
+	public void createProduct_missingName_displaysErrorMessage() throws Exception {
+		mockMvc.perform(post("/admin/product")
+				.param("price", "10")
+				.param("quantity", "2"))
+		.andExpect(view().name("product"))
+		.andExpect(model().attributeExists("product"))
+		.andExpect(model().errorCount(1))
+		.andExpect(status().is2xxSuccessful());
+	}
+	
+//	//@Test
+//	public void createProduct_missingPrice_displaysErrorMessage() throws Exception {
+//		//TODO
 //	}
-	
-	//@Test
-	public void createProduct_missingPrice_displaysErrorMessage() throws Exception {
-		//TODO
-	}
-	
-	//@Test
-	public void createProduct_priceNotANumber_displaysErrorMessage() throws Exception {
-		//TODO
-	}
-	
-	//@Test
-	public void createProduct_priceNotGreaterThanZero_displaysErrorMessage() throws Exception {
-		//TODO
-	}
-	
-	//@Test
-	public void createProduct_MissingQuantity_displaysErrorMessage() throws Exception {
-		//TODO
-	}
-
-	//@Test
-	public void createProduct_QuantityNotAnInteger_displaysErrorMessage() throws Exception {
-		//TODO
-	}
-	
-	//@Test
-	public void createProduct_QuantityNotGreaterThanZero_displaysErrorMessage() throws Exception {
-		//TODO
-	}
+//	
+//	//@Test
+//	public void createProduct_priceNotANumber_displaysErrorMessage() throws Exception {
+//		//TODO
+//	}
+//	
+//	//@Test
+//	public void createProduct_priceNotGreaterThanZero_displaysErrorMessage() throws Exception {
+//		//TODO
+//	}
+//	
+//	//@Test
+//	public void createProduct_MissingQuantity_displaysErrorMessage() throws Exception {
+//		//TODO
+//	}
+//
+//	//@Test
+//	public void createProduct_QuantityNotAnInteger_displaysErrorMessage() throws Exception {
+//		//TODO
+//	}
+//	
+//	//@Test
+//	public void createProduct_QuantityNotGreaterThanZero_displaysErrorMessage() throws Exception {
+//		//TODO
+//	}
 
 }
