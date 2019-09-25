@@ -18,10 +18,12 @@ import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.doNothing;
+import static org.hamcrest.CoreMatchers.*;
 
 /**
  * Take this test method as a template to write your test methods for ProductService and OrderService.
@@ -84,9 +86,11 @@ public class ProductServiceTest {
         // act
         List<Product> products = productService.getAllAdminProducts();
 
-        // assert
-        assertEquals(2, products.size());
-        assertEquals(1L, products.get(0).getId() , 0);
+        // assert (using Hamcrest)
+        assertThat(2, is(equalTo(products.size())));
+        assertThat(1L, is(equalTo(products.get(0).getId())));
+        //assertEquals(2, products.size());
+        //assertEquals(1L, products.get(0).getId() , 0);
     }
     
     @Test
@@ -157,7 +161,6 @@ public class ProductServiceTest {
         Cart cart = new Cart();
         cart.addItem(product, 1);
         
-        // Stub: search for product by productId, then assign it to an Optional type and return it
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
         
     	// act
@@ -179,6 +182,7 @@ public class ProductServiceTest {
         
         ArgumentCaptor<Product> productArgument = ArgumentCaptor.forClass(Product.class);
 
+        // Stub: search for product by productId, then assign it to an Optional type and return it
         when(productRepository.findById(1L)).thenReturn(Optional.of(product));
     	
     	// act
