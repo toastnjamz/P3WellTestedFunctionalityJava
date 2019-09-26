@@ -1,1 +1,6 @@
 /target/
+# ignore all files in any directory named .idea
+.idea/
+# ignore all .iml files
+*.iml
+vcs.xml
