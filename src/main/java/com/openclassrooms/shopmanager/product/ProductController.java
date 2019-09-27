@@ -33,7 +33,6 @@ public class ProductController {
         return "productsAdmin";
     }
 
-
     @GetMapping("/admin/product")
     public String productForm(Model model) {
         model.addAttribute("product", new ProductModel());
@@ -50,7 +49,8 @@ public class ProductController {
         if (!result.hasErrors()) {
             productService.createProduct(productModel);
             return "redirect:/admin/products";
-        } else {
+        } 
+        else {
             return "product";
         }
     }
