@@ -11,7 +11,13 @@
 </head>
 
 <body>
-<!-- TODO: Add html to display all error messages at the top of the page  -->
+<!-- Added HTML to loop through and display any error messages at the top of the page  -->
+<div th:object="${product}" th:remove="tag">
+	<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger"
+		role="alert">
+		<li th:each="err : ${#fields.errors('*')}" th:text="${err}"></li>
+	</ul>
+</div> 
 
 <div th:replace="fragments :: navbar">Navigation bar fragment</div>
 

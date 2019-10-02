@@ -3,7 +3,6 @@ package com.openclassrooms.shopmanager.product;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 
@@ -20,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(ProductController.class)
 @RunWith(SpringJUnit4ClassRunner.class)
-public class ProductControllerIT {
+public class ProductControllerSIT {
 	
     @Autowired
     private MockMvc mockMvc;
