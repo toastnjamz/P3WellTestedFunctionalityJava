@@ -1,7 +1,10 @@
 package com.openclassrooms.shopmanager.product;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
+
+import com.openclassrooms.shopmanager.Price;
+import com.openclassrooms.shopmanager.Quantity;
 
 public class ProductModel {
 
@@ -14,11 +17,12 @@ public class ProductModel {
     private String details;
     
     @NotBlank(message = "Quantity cannot be blank. Please enter a quantity greater than zero.")
-    @Size(min=1, message = "Quantity cannot be less than or equal to zero. Please enter a quantity greater than zero.")
+    @Quantity(message = "Quantity must be greater than zero.")
     private String quantity;       // Required, Integer, Greater than zero
     
     @NotBlank(message = "Price cannot be blank. Please enter a decimal number price greater than zero.")
-    @Size(min=1, message = "Price cannot be less than or equal to zero. Please enter a decimal number price greater than zero.")
+    @Pattern(regexp = "(1|[1-9]\\d*)?(\\.\\d+)", message = "Price must be a decimal number and greater than zero")
+    //@Price(message = "Price must be a decimal number and greater than zero.")
     private String price;          // Required, Numeric, Greater than zero
 
     public Long getId() {
