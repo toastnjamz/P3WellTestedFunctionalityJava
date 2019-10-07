@@ -89,6 +89,8 @@ public class ProductServiceTest {
         // assert (using Hamcrest)
         assertThat(2, is(equalTo(products.size())));
         assertThat(1L, is(equalTo(products.get(0).getId())));
+        
+        // assert using regular JUnit
         //assertEquals(2, products.size());
         //assertEquals(1L, products.get(0).getId() , 0);
     }

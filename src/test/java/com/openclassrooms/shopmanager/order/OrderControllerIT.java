@@ -1,6 +1,7 @@
 package com.openclassrooms.shopmanager.order;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.openclassrooms.shopmanager.order.Cart;
@@ -19,15 +20,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(SpringRunner.class)
-public class OrderControllerSIT {
+@DataJpaTest
+public class OrderControllerIT {
 	
-	//@Autowired
+	@Autowired
 	private ProductRepository productRepository;
-	
-	//@Autowired
 	private OrderRepository orderRepository;
-	
-	//@Autowired
 	private Product product;
 	
 	@Before
@@ -49,7 +47,7 @@ public class OrderControllerSIT {
 	}
 	
 	@Test
-	public void createProductandAddToCart_addingOneProduct_productAddedToCart() {
+	public void createProductAndAddToCart_addingOneProduct_productAddedToCart() {
 		// arrange
 		ProductService productService = new ProductService(productRepository);
 		OrderService orderService = new OrderService(orderRepository, productService);

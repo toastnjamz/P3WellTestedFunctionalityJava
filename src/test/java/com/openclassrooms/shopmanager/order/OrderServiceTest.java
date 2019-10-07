@@ -118,7 +118,6 @@ public class OrderServiceTest {
         orderService.addToCart(product.getId());
         assertEquals(false, cart.getCartLineList().isEmpty());
         orderService.removeFromCart(product.getId());
-        assertEquals(true, cart.getCartLineList().isEmpty());
     	
     	// assert
         assertEquals(true, cart.getCartLineList().isEmpty());
@@ -127,19 +126,7 @@ public class OrderServiceTest {
     @Test
     public void isCartEmpty_addingAndRemovingProduct_returnsTrue() {
     	// arrange
-    	//Product product = new Product();
-        //product.setId(1L);
-        
-        //Cart cart = orderService.getCart();
-    	
-        //orderService.addToCart(1L);
-        //assertEquals(false, cart.getCartLineList().isEmpty());
-        //orderService.removeFromCart(1L);
-        //assertEquals(true, cart.getCartLineList().isEmpty());
-    	
     	when(orderServiceMock.isCartEmpty()).thenReturn(true);
-        //when(orderService.getCart().getCartLineList().isEmpty()).thenReturn(true);
-        //when(orderService.isCartEmpty()).thenReturn(true);
     	
     	// act
         boolean emptyCart = orderServiceMock.isCartEmpty();
@@ -153,11 +140,11 @@ public class OrderServiceTest {
     public void createOrder_creatingNewOrderToSave_savesOrderAndClearsCart() {
     	// arrange
     	Order order = new Order();
-    	//Cart cart = new Cart();
     	
         ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
         ArgumentCaptor<Cart> cartCaptor = ArgumentCaptor.forClass(Cart.class);
         
+        // Doesn't work, seems like @InjectMocks and @Mock wires are getting crossed
         //doNothing().when(orderService).saveOrder(orderCaptor.capture());
     	
     	// act
@@ -168,7 +155,5 @@ public class OrderServiceTest {
         verify(productService, times(1)).updateProductQuantities(cartCaptor.capture());
     	assertEquals(order, orderCaptor.getValue());
     	assertNotNull(cartCaptor.getValue());
-    	//assertEquals(cart, cartCaptor.getValue());
-    	//verify(cart, times(1)).clear();
     }
 }

@@ -46,10 +46,6 @@ public class ProductController {
     @PostMapping("/admin/product")
     public String createProduct(@Valid @ModelAttribute("product") ProductModel productModel, BindingResult result)
     {
-        //TODO implement form fields validation using the standard annotations in ProductModel class
-        // Business constraints for each field is commented against it
-        // Add proper error messages for each error and show all of them at the top of the page
-    	
     	if (!result.hasErrors()) {
             productService.createProduct(productModel);
             return "redirect:/admin/products";
