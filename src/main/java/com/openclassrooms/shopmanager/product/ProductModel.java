@@ -17,7 +17,7 @@ public class ProductModel {
     private String details;
     
     @NotBlank(message = "Quantity cannot be blank. Please enter a quantity greater than zero.")
-    @Quantity(message = "Quantity must be greater than zero.")
+    @Quantity(message = "Quantity must be a whole number greater than zero.")
     private String quantity;       // Required, Integer, Greater than zero
     
     @NotBlank(message = "Price cannot be blank. Please enter a decimal number price greater than zero.")

@@ -7,9 +7,9 @@ public class QuantityValidator implements ConstraintValidator<Quantity, String> 
 	@Override
 	public boolean isValid(String value, ConstraintValidatorContext context) {
 
-		Double number;
+		Integer number;
 		try {
-			number = Double.parseDouble(value);
+			number = Integer.parseInt(value);
 		} catch (NumberFormatException e) {
 			return false;
 		}
